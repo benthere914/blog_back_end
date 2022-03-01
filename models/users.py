@@ -1,6 +1,5 @@
 from .db import db
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -26,10 +25,8 @@ class User(db.Model, UserMixin):
 
     @password.setter
     def password(self, password):
-        self.hashed_password = generate_password_hash(password)
+        self.hashed_password = password
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
 
     def to_dict(self):
         return {
@@ -37,3 +34,25 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email
         }
+
+    @property
+    def identity(self):
+        return self.id
+
+    @property
+    def rolenames(self):
+        try:
+            return self.roles.split(",")
+        except Exception:
+            return []
+
+    @classmethod
+    def lookup(cls, username):
+        return cls.query.filter_by(email=username).one_or_none()
+
+    @classmethod
+    def identify(cls, id):
+        return cls.query.get(id)
+
+    def is_valid(self):
+        return self.is_active
