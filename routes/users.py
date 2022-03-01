@@ -1,5 +1,5 @@
 from flask import Blueprint
-from jwt import auth_required, current_user
+from auth_token import auth_required, current_user
 from models import User
 user_routes = Blueprint('users', __name__)
 

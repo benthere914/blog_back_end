@@ -1,4 +1,3 @@
-import os
 username = "benthere914"
 password = "password"
 rds_endpoint = "aa168dne82z8rx4.c4exkio8rsp6.us-west-2.rds.amazonaws.com"
